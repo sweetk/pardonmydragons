@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Sebastian's Blog!</h1>
+    <form method='post' action="/">
+        <label>
+            Blog Title:
+            <input type="text" name='blog_title' />
+            <br>
+            Blog Body:
+            <input type="text" name='blog_body' />
+        </label>
+        <input type="submit" value='Post' />
+    </form>
+
+    <hr />
+
+    {% if blogs|length == 0 %}
+    <p>No blogs yet</p>
+    {% else %}
+
+        <ul>
+            {% for blog in blogs %}
+            <li>{{blog.title}}
+                <form method="POST" action="/" style="display:inline-block;">
+                    <input type="hidden" name="blog-id" value="{{blog.id}}" />
+                    <input type="submit" value="Done!" />
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+
+    <hr />
+
+{% endblock %}
