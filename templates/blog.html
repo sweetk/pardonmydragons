@@ -8,7 +8,7 @@
       <p>No blogs yet</p>
 
     {% else %}
-      {% for blog in blogs %}
+      {% for blog in blogs|reverse %}
 
       <hr />
       <h2><a href='./blog?id={{blog.id}}'>{{blog.title}}</a></h2>
