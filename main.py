@@ -14,9 +14,8 @@ class Blog(db.Model):
     title = db.Column(db.String(120))
     body = db.Column(db.String(2000))
 
-    def __init__(self, title, id):
+    def __init__(self, title):
         self.title = title
-        self.id = id
 
     def post(self, body):
         self.body = body
@@ -63,7 +62,9 @@ def newpost():
         db.session.add(new_blog)
         db.session.commit()
 
-        return redirect('/blog')
+        #id_num = new_blog.id
+
+        return redirect('/blog?id=' + str(new_blog.id))
 
     else:
         return render_template('newpost.html')
