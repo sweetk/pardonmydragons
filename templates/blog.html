@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <a href='./newpost'>Make a new post</a>
+
+    {% if blogs|length == 0 %}
+      <p>No blogs yet</p>
+
+    {% else %}
+      {% for blog in blogs %}
+
+      <hr />
+      <h2>{{blog.title}}</h2>
+      <p>{{blog.body}}</p>
+      {% endfor %}
+
+    {% endif %}
+
+    <hr />
+
+{% endblock %}
