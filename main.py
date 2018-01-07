@@ -14,8 +14,9 @@ class Blog(db.Model):
     title = db.Column(db.String(120))
     body = db.Column(db.String(2000))
 
-    def __init__(self, title):
+    def __init__(self, title, id):
         self.title = title
+        self.id = id
 
     def post(self, body):
         self.body = body
@@ -23,11 +24,19 @@ class Blog(db.Model):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    return redirect('/blogs')
+    return redirect('/blog')
 
-@app.route('/blogs', methods=['POST', 'GET'])
-def blogs():
+@app.route('/blog', methods=['POST', 'GET'])
+def blog():
     blogs = Blog.query.all()
+    blog_id = request.args.get('id')
+
+    #Individual blog request
+    if blog_id:
+        blog_id = int(blog_id)
+        return render_template('individualentry.html', blogs=blogs, blog_id=blog_id)
+
+    #Full blog
     return render_template('blog.html', blogs=blogs)
 
 @app.route('/newpost', methods=['POST', 'GET'])
@@ -47,7 +56,6 @@ def newpost():
             body_error = 'This post needs a body'
         new_blog.post(blog_body)
 
-        #TODO edit newpost so blog title and body are preserved
         if title_error != '' or body_error != '':
             return render_template('newpost.html', saved_title=blog_title, saved_body=blog_body, title_error=title_error, body_error=body_error)
 
@@ -55,7 +63,7 @@ def newpost():
         db.session.add(new_blog)
         db.session.commit()
 
-        return redirect('/blogs')
+        return redirect('/blog')
 
     else:
         return render_template('newpost.html')
