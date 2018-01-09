@@ -110,14 +110,14 @@ def blog():
     #Individual blog request
     if blog_id:
         blog_id = int(blog_id)
-        return render_template('individualentry.html', blogs=blogs, blog_id=blog_id)
+        return render_template('individualentry.html', blogs=blogs, users=users, blog_id=blog_id)
 
     if user_id:
         user_id = int(user_id)
         return render_template('individualuser.html', blogs=blogs, users=users, user_id=user_id)
 
     #Full blog
-    return render_template('blog.html', blogs=blogs)
+    return render_template('blog.html', users=users, blogs=blogs)
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
