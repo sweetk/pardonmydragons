@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>blogz</title>
+        <title>Sebastian's Blog!</title>
         <style type="text/css">
             .error {
                 color: red;
@@ -25,7 +25,8 @@
             <a href="login">login</a> | <a href="register">register</a>
           {% endif %}
         </div>
-    <a href='./'><h1>Sebastian's Blog!</h1></a>
+    <a href='./blog'><h1>View the Full Blog!</h1></a>
+    <a href='./'>Browse Posts by User</a>
 
     {% with messages = get_flashed_messages(with_categories=True) %}
         <ul>

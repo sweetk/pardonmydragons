@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <a href='./newpost'>Make a new post</a>
+
+    {% if users|length == 0 %}
+      <p>No users yet!</p>
+
+    {% else %}
+      {% for user in users|reverse %}
+
+      <hr />
+      <ul>
+      <h2><a href='./blog?user_id={{user.id}}'>{{user.username}}</a></h2>
+      </ul>
+      {% endfor %}
+
+    {% endif %}
+
+{% endblock %}

@@ -97,17 +97,24 @@ def logout():
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    return redirect('/blog')
+    users = User.query.all()
+    return render_template('index.html', users=users)
 
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
     blogs = Blog.query.all()
+    users = User.query.all()
     blog_id = request.args.get('id')
+    user_id = request.args.get('user_id')
 
     #Individual blog request
     if blog_id:
         blog_id = int(blog_id)
         return render_template('individualentry.html', blogs=blogs, blog_id=blog_id)
+
+    if user_id:
+        user_id = int(user_id)
+        return render_template('individualuser.html', blogs=blogs, users=users, user_id=user_id)
 
     #Full blog
     return render_template('blog.html', blogs=blogs)
