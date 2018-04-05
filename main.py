@@ -76,6 +76,20 @@ def logout():
     del session['username']
     return redirect('/')
 
+@app.route('/charactercreation', methods=['POST', 'GET'])
+def charactercreation():
+    if request.method == 'POST':
+        charname = request.form['charname']
+        if len(charname) < 1:
+            flash("Please enter a Character Name.")
+            return redirect('/charactercreation')
+        else:
+            flash("Welcome " + charname + "!")
+
+
+    return render_template('charactercreation.html')
+
+
 @app.route('/', methods=['POST', 'GET'])
 def index():
     users = User.query.all()

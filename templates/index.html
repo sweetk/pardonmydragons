@@ -2,18 +2,10 @@
 
 {% block content %}
 
-    {% if users|length == 0 %}
-      <p>No users yet!</p>
+    <hr />
+    <p>This is just a basic description of the website.</p>
+    <hr />
 
-    {% else %}
-      {% for user in users|reverse %}
-
-        <hr />
-        <ul>
-        <h2>{{user.username}}</h2>
-        </ul>
-      {% endfor %}
-
-    {% endif %}
+    You can make a character <a href="./charactercreation">here</a>. 
 
 {% endblock %}
