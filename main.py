@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from hashutils import make_pw_hash, check_pw_hash
+import requests, json
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -14,10 +15,23 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True)
     pw_hash = db.Column(db.String(120))
+    characters =  db.relationship('Character', backref='owner')
 
     def __init__(self, username, password):
         self.username = username
         self.pw_hash = make_pw_hash(password)
+
+class Character(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    charname = db.Column(db.String(120))
+    charclass = db.Column(db.String(120))
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __init__(self, charname, charclass, owner):
+        self.charname = charname
+        self.charclass = charclass
+        self.owner = owner
 
 @app.before_request
 def require_login():
@@ -80,15 +94,27 @@ def logout():
 def charactercreation():
     if request.method == 'POST':
         charname = request.form['charname']
+        charclass = request.form['charclass']
+        owner = User.query.filter_by(username=session['username']).first()
+
         if len(charname) < 1:
             flash("Please enter a Character Name.")
             return redirect('/charactercreation')
         else:
-            flash("Welcome " + charname + "!")
+            new_char = Character(charname, charclass, owner)
+            db.session.add(new_char)
+            db.session.commit()
+            flash(charname + " the " + charclass + " has been saved to the database!")
 
 
     return render_template('charactercreation.html')
 
+@app.route('/SRD', methods=['GET'])
+def SRD():
+    response = requests.get("http://dnd5eapi.co/api/monsters/123.json")
+    content = response.json()
+
+    return render_template('SRD.html', content=content)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table>
+   {% for key in content %}
+       {% if content[key] != '' and key != 'url' and key != '_id' and key != 'index' %} <!--Only include catagories with useful information-->
+
+
+           {% if content[key][0]|length == 1 or content[key][0]|length == 0 %}
+           <!--This deals with strings or ints-->
+           <th>{{ key }}</th>
+           <td>{{ content[key] }}</td>
+
+           {% else %} <!--These should all be dictionaries. Deal with them-->
+           <th rowspan = '{{ content[key]|length }}'>{{ key }}</th>
+
+           {% for inner_dict in content[key] %}
+
+               {% for inner_key in inner_dict %}
+               <th>{{ inner_key }}</th>
+               <td>{{inner_dict[inner_key]}}</td>
+
+
+               {% endfor %}
+           </tr>
+           {% endfor %}
+
+           {% endif %}
+       {% endif %}
+       </tr>
+
+   {% endfor %}
+</table>
+
+{% endblock %}
