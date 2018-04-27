@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Search: Monsters only in Testing</h1>
+<form action="/search" method="post">
+    <select name="searchterm">
+        {% for dict in content["results"] %}
+
+        <option value="{{dict['url']}}">{{dict['name']}}</option>
+
+        {% endfor %}
+    </select>
+  <input type="submit" value="Search">
+</form>
+
+{% endblock %}

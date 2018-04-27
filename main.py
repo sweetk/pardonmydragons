@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session, flash
+from flask import Flask, request, redirect, render_template, session, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
 from hashutils import make_pw_hash, check_pw_hash
 import requests, json
@@ -109,9 +109,22 @@ def charactercreation():
 
     return render_template('charactercreation.html')
 
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        searchterm = request.form['searchterm']
+        return redirect(url_for('SRD', searchterm = searchterm))
+
+    response = requests.get("http://dnd5eapi.co/api/monsters")
+    content = response.json()
+
+    return render_template('search.html', content=content)
+
 @app.route('/SRD', methods=['GET'])
 def SRD():
-    response = requests.get("http://dnd5eapi.co/api/monsters/123.json")
+    searchterm = request.args['searchterm']
+
+    response = requests.get(searchterm)
     content = response.json()
 
     return render_template('SRD.html', content=content)
