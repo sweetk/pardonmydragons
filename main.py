@@ -10,6 +10,18 @@ app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 app.secret_key = '09876trcvbnmki8u7y6tgbnmkiu87ytgbn'
 
+## Table of Contents ##
+# Classes
+# login
+# logout
+# register
+# character Creation
+# character list
+# character view
+# search
+# srd
+# index
+
 class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -26,12 +38,26 @@ class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     charname = db.Column(db.String(120))
     charclass = db.Column(db.String(120))
+    #attributes
+    strength = db.Column(db.Integer)
+    dexterity = db.Column(db.Integer)
+    constitution = db.Column(db.Integer)
+    intelligence = db.Column(db.Integer)
+    wisdom = db.Column(db.Integer)
+    charisma = db.Column(db.Integer)
+    #foreign keys
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, charname, charclass, owner):
+    def __init__(self, charname, charclass, owner, strength, dexterity, constitution, intelligence, wisdom, charisma):
         self.charname = charname
         self.charclass = charclass
         self.owner = owner
+        self.strength = strength
+        self.dexterity = dexterity
+        self.constitution = constitution
+        self.intelligence = intelligence
+        self.wisdom = wisdom
+        self.charisma = charisma
 
 @app.before_request
 def require_login():
@@ -63,13 +89,13 @@ def register():
 
         # validate user's data
         if len(username) < 3:
-            flash("Your username must be more than 3 characters.")
+            flash("Your username must be more than 3 characters.", 'error')
             return redirect('/register')
         if not password == verify:
-            flash("Your passwords did not match, please try again")
+            flash("Your passwords did not match, please try again", 'error')
             return redirect('/register')
         if len(password) < 3:
-            flash("Your password must be more than 3 characters.")
+            flash("Your password must be more than 3 characters.", 'error')
             return redirect('/register')
 
         existing_user = User.query.filter_by(username=username).first()
@@ -80,7 +106,7 @@ def register():
             session['username'] = username
             return redirect('/') #Change to welcome?
         else:
-            flash("A user with that username already exists")
+            flash("A user with that username already exists", 'error')
             return redirect('/register')
 
     return render_template('register.html')
@@ -96,12 +122,22 @@ def charactercreation():
         charname = request.form['charname']
         charclass = request.form['charclass']
         owner = User.query.filter_by(username=session['username']).first()
+        #attributes
+        strength = request.form['strength']
+        dexterity = request.form['dexterity']
+        constitution = request.form['constitution']
+        intelligence = request.form['intelligence']
+        wisdom = request.form['wisdom']
+        charisma = request.form['charisma']
 
         if len(charname) < 1:
-            flash("Please enter a Character Name.")
+            flash("Please enter a Character Name.", 'error')
+            return redirect('/charactercreation')
+        if not strength or not dexterity or not constitution or not intelligence or not wisdom or not charisma:
+            flash("All attributes must have a value.", 'error')
             return redirect('/charactercreation')
         else:
-            new_char = Character(charname, charclass, owner)
+            new_char = Character(charname, charclass, owner, strength, dexterity, constitution, intelligence, wisdom, charisma)
             db.session.add(new_char)
             db.session.commit()
             return redirect(url_for('characterview', id = new_char.id))
@@ -111,8 +147,10 @@ def charactercreation():
 
 @app.route('/characterlist', methods=['GET'])
 def characterlist():
+    current_user = User.query.filter_by(username=session['username']).first()
+    to_list = current_user.characters
 
-    return render_template('characterlist.html')
+    return render_template('characterlist.html', to_list=to_list)
 
 @app.route('/characterview', methods=['GET'])
 def characterview():

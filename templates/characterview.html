@@ -4,4 +4,31 @@
 
 <h1>{{current_char.charname}} the {{current_char.charclass}}</h1>
 
+<table>
+  <tr>
+    <td>Strength<td>
+    {{ current_char.strength }}
+  </tr>
+  <tr>
+    <td>Dexterity<td>
+    {{ current_char.dexterity }}
+  </tr>
+  <tr>
+    <td>Constitution<td>
+    {{ current_char.constitution }}
+  </tr>
+  <tr>
+    <td>Intellegence<td>
+    {{ current_char.intelligence }}
+  </tr>
+  <tr>
+    <td>Wisdom<td>
+    {{ current_char.wisdom }}
+  </tr>
+  <tr>
+    <td>Charisma<td>
+    {{ current_char.charisma }}
+  </tr>
+</table>
+
 {% endblock %}

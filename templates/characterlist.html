@@ -4,6 +4,12 @@
 
 <h1>My Characters</h1>
 
-heck
+<ul>
+  {% for character in to_list %}
+
+    <li><a href="./characterview?id={{ character.id }}">{{ character.charname }} the {{ character.charclass }}</a></li>
+
+  {% endfor %}
+</ul>
 
 {% endblock %}
