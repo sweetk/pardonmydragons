@@ -19,6 +19,8 @@
     </head>
 
 <body>
+
+  <!-- Navigation Bar -->
     <div style='float: right'>
           {% if 'username' in session %}
             {{ session['username'] }}
@@ -29,6 +31,17 @@
             <a href="login">login</a> | <a href="register">register</a>
           {% endif %}
         </div>
+
+        <div style='float: right; padding: 0px 15px'>
+          <h3><a href="./search">Search</a></h3>
+        </div>
+        <div style='float: right; padding: 0px 15px'>
+          <h3><a href="./charactercreation">Character Creation</a></h3>
+        </div>
+        <div style='float: right; padding: 0px 15px'>
+          <h3><a href="./characterlist">My Characters</a></h3>
+        </div>
+
     <a href='./'><h1>Pardon My Dragons!</h1></a>
 
     {% with messages = get_flashed_messages(with_categories=True) %}

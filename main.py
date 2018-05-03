@@ -104,10 +104,23 @@ def charactercreation():
             new_char = Character(charname, charclass, owner)
             db.session.add(new_char)
             db.session.commit()
-            flash(charname + " the " + charclass + " has been saved to the database!")
+            return redirect(url_for('characterview', id = new_char.id))
 
 
     return render_template('charactercreation.html')
+
+@app.route('/characterlist', methods=['GET'])
+def characterlist():
+
+    return render_template('characterlist.html')
+
+@app.route('/characterview', methods=['GET'])
+def characterview():
+    id = request.args['id']
+    current_char = Character.query.filter_by(id=id).first()
+
+    return render_template('characterview.html', current_char=current_char)
+
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
