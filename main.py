@@ -37,6 +37,7 @@ class Character(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     charname = db.Column(db.String(120))
+    charrace = db.Column(db.String(120))
     charclass = db.Column(db.String(120))
     #attributes
     strength = db.Column(db.Integer)
@@ -48,16 +49,11 @@ class Character(db.Model):
     #foreign keys
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, charname, charclass, owner, strength, dexterity, constitution, intelligence, wisdom, charisma):
+    def __init__(self, charname, charrace, charclass, owner):
         self.charname = charname
+        self.charrace = charrace
         self.charclass = charclass
         self.owner = owner
-        self.strength = strength
-        self.dexterity = dexterity
-        self.constitution = constitution
-        self.intelligence = intelligence
-        self.wisdom = wisdom
-        self.charisma = charisma
 
 @app.before_request
 def require_login():
@@ -120,30 +116,27 @@ def logout():
 def charactercreation():
     if request.method == 'POST':
         charname = request.form['charname']
+        charrace = request.form['charrace']
         charclass = request.form['charclass']
         owner = User.query.filter_by(username=session['username']).first()
-        #attributes
-        strength = request.form['strength']
-        dexterity = request.form['dexterity']
-        constitution = request.form['constitution']
-        intelligence = request.form['intelligence']
-        wisdom = request.form['wisdom']
-        charisma = request.form['charisma']
 
         if len(charname) < 1:
             flash("Please enter a Character Name.", 'error')
             return redirect('/charactercreation')
-        if not strength or not dexterity or not constitution or not intelligence or not wisdom or not charisma:
-            flash("All attributes must have a value.", 'error')
-            return redirect('/charactercreation')
         else:
-            new_char = Character(charname, charclass, owner, strength, dexterity, constitution, intelligence, wisdom, charisma)
+            new_char = Character(charname, charrace, charclass, owner)
             db.session.add(new_char)
             db.session.commit()
             return redirect(url_for('characterview', id = new_char.id))
 
+    #populate classes
+    response = requests.get("http://dnd5eapi.co/api/classes")
+    content_class = response.json()
+    #populate races
+    response = requests.get("http://dnd5eapi.co/api/races")
+    content_race = response.json()
 
-    return render_template('charactercreation.html')
+    return render_template('charactercreation.html', content_class=content_class, content_race=content_race)
 
 @app.route('/characterlist', methods=['GET'])
 def characterlist():
@@ -152,10 +145,24 @@ def characterlist():
 
     return render_template('characterlist.html', to_list=to_list)
 
-@app.route('/characterview', methods=['GET'])
+@app.route('/characterview', methods=['GET', 'POST'])
 def characterview():
+    #needed for both get and post requests
     id = request.args['id']
     current_char = Character.query.filter_by(id=id).first()
+
+    #Update
+    if request.method =='POST':
+        #attributes
+        current_char.strength = request.form['strength']
+        current_char.dexterity = request.form['dexterity']
+        current_char.constitution = request.form['constitution']
+        current_char.intelligence = request.form['intelligence']
+        current_char.wisdom = request.form['wisdom']
+        current_char.charisma = request.form['charisma']
+
+        db.session.commit()
+        flash('Updated Attributes!')
 
     return render_template('characterview.html', current_char=current_char)
 

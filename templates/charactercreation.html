@@ -11,49 +11,28 @@
             </td>
         </tr>
         <tr>
-            <td><label for="charclass">Character Class</label></td>
+            <td><label for="charrace">Character Race</label></td>
             <td>
-                <select name="charclass">
-                    <option value="Barbarian">Barbarian</option>
-                    <option value="Bard">Bard</option>
-                    <option value="Cleric">Cleric</option>
-                    <option value="Druid">Druid</option>
-                    <option value="Fighter">Fighter</option>
-                    <option value="Monk">Monk</option>
-                    <option value="Paladin">Paladin</option>
-                    <option value="Ranger">Ranger</option>
-                    <option value="Rogue">Rogue</option>
-                    <option value="Sorcerer">Sorcerer</option>
-                    <option value="Warlock">Warlock</option>
-                    <option value="Wizard">Wizard</option>
+                <select name="charrace">
+                    {% for dict in content_race["results"] %}
+
+                    <option value="{{dict['name']}}">{{dict['name']}}</option>
+
+                    {% endfor %}
                 </select>
             </td>
         </tr>
+        <tr>
+            <td><label for="charclass">Character Class</label></td>
+            <td>
+                <select name="charclass">
+                    {% for dict in content_class["results"] %}
 
-        <!--Attributes-->
-        <tr>
-          <td><label for="strength">Strength</label><td>
-          <input name="strength" type="number" min="1" max="40" value="{{ strength }}">
-        </tr>
-        <tr>
-          <td><label for="dexterity">Dexterity</label><td>
-          <input name="dexterity" type="number" min="1" max="40" value="{{ dexterity }}">
-        </tr>
-        <tr>
-          <td><label for="constitution">Constitution</label><td>
-          <input name="constitution" type="number" min="1" max="40" value="{{ constitution }}">
-        </tr>
-        <tr>
-          <td><label for="intelligence">Intelligence</label><td>
-          <input name="intelligence" type="number" min="1" max="40" value="{{ intelligence }}">
-        </tr>
-        <tr>
-          <td><label for="wisdom">Wisdom</label><td>
-          <input name="wisdom" type="number" min="1" max="40" value="{{ wisdom }}">
-        </tr>
-        <tr>
-          <td><label for="charisma">Charisma</label><td>
-          <input name="charisma" type="number" min="1" max="40" value="{{ charisma }}">
+                    <option value="{{dict['name']}}">{{dict['name']}}</option>
+
+                    {% endfor %}
+                </select>
+            </td>
         </tr>
     </table>
     <input type="submit" value="Create">

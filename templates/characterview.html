@@ -2,33 +2,37 @@
 
 {% block content %}
 
-<h1>{{current_char.charname}} the {{current_char.charclass}}</h1>
+<h1>{{current_char.charname}} the {{current_char.charrace}} {{current_char.charclass}}</h1>
+<form action="/characterview?id={{current_char.id}}" method="post">
+    <table>
+        <th colspan="2">Attributes</th>
+        <tr>
+          <td><label for="strength">Strength</label><td>
+          <input name="strength" type="number" min="1" max="40" value="{{ current_char.strength }}">
+        </tr>
+        <tr>
+          <td><label for="dexterity">Dexterity</label><td>
+          <input name="dexterity" type="number" min="1" max="40" value="{{ current_char.dexterity }}">
+        </tr>
+        <tr>
+          <td><label for="constitution">Constitution</label><td>
+          <input name="constitution" type="number" min="1" max="40" value="{{ current_char.constitution }}">
+        </tr>
+        <tr>
+          <td><label for="intelligence">Intelligence</label><td>
+          <input name="intelligence" type="number" min="1" max="40" value="{{ current_char.intelligence }}">
+        </tr>
+        <tr>
+          <td><label for="wisdom">Wisdom</label><td>
+          <input name="wisdom" type="number" min="1" max="40" value="{{ current_char.wisdom }}">
+        </tr>
+        <tr>
+          <td><label for="charisma">Charisma</label><td>
+          <input name="charisma" type="number" min="1" max="40" value="{{ current_char.charisma }}">
+        </tr>
 
-<table>
-  <tr>
-    <td>Strength<td>
-    {{ current_char.strength }}
-  </tr>
-  <tr>
-    <td>Dexterity<td>
-    {{ current_char.dexterity }}
-  </tr>
-  <tr>
-    <td>Constitution<td>
-    {{ current_char.constitution }}
-  </tr>
-  <tr>
-    <td>Intellegence<td>
-    {{ current_char.intelligence }}
-  </tr>
-  <tr>
-    <td>Wisdom<td>
-    {{ current_char.wisdom }}
-  </tr>
-  <tr>
-    <td>Charisma<td>
-    {{ current_char.charisma }}
-  </tr>
-</table>
+        <th colspan="2"><input type="submit" value="Update"></th>
+    </table>
+</form>
 
 {% endblock %}
