@@ -2,10 +2,60 @@
 
 {% block content %}
 
-<h1>Search: Monsters only in Testing</h1>
+<h1>Search</h1>
+<!--Races-->
 <form action="/search" method="post">
+  <label for="searchterm"><b>Races (Under Construction):</b></label>
     <select name="searchterm">
-        {% for dict in content["results"] %}
+        {% for dict in content_races["results"] %}
+
+        <option value="{{dict['url']}}">{{dict['name']}}</option>
+
+        {% endfor %}
+    </select>
+  <input type="submit" value="Search">
+</form>
+<!--Classes-->
+<form action="/search" method="post">
+  <label for="searchterm"><b>Classes (Under Construction):</b></label>
+    <select name="searchterm">
+        {% for dict in content_classes["results"] %}
+
+        <option value="{{dict['url']}}">{{dict['name']}}</option>
+
+        {% endfor %}
+    </select>
+  <input type="submit" value="Search">
+</form>
+<!--Spells-->
+<form action="/search" method="post">
+  <label for="searchterm"><b>Spells (Under Construction):</b></label>
+    <select name="searchterm">
+        {% for dict in content_spells["results"] %}
+
+        <option value="{{dict['url']}}">{{dict['name']}}</option>
+
+        {% endfor %}
+    </select>
+  <input type="submit" value="Search">
+</form>
+<!--Monsters-->
+<form action="/search" method="post">
+  <label for="searchterm"><b>Monsters:</b></label>
+    <select name="searchterm">
+        {% for dict in content_monsters["results"] %}
+
+        <option value="{{dict['url']}}">{{dict['name']}}</option>
+
+        {% endfor %}
+    </select>
+  <input type="submit" value="Search">
+</form>
+<!--Equipment-->
+<form action="/search" method="post">
+  <label for="searchterm"><b>Equipment (Under Construction):</b></label>
+    <select name="searchterm">
+        {% for dict in content_equipment["results"] %}
 
         <option value="{{dict['url']}}">{{dict['name']}}</option>
 

@@ -173,10 +173,18 @@ def search():
         searchterm = request.form['searchterm']
         return redirect(url_for('SRD', searchterm = searchterm))
 
+    response = requests.get("http://dnd5eapi.co/api/races")
+    content_races = response.json()
+    response = requests.get("http://dnd5eapi.co/api/classes")
+    content_classes = response.json()
+    response = requests.get("http://dnd5eapi.co/api/spells")
+    content_spells = response.json()
     response = requests.get("http://dnd5eapi.co/api/monsters")
-    content = response.json()
+    content_monsters = response.json()
+    response = requests.get("http://dnd5eapi.co/api/equipment")
+    content_equipment = response.json()
 
-    return render_template('search.html', content=content)
+    return render_template('search.html', content_races=content_races, content_classes=content_classes, content_spells=content_spells, content_monsters=content_monsters, content_equipment=content_equipment)
 
 @app.route('/SRD', methods=['GET'])
 def SRD():
